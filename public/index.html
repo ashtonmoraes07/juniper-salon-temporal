@@ -3,31 +3,131 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Temporal assessment starter</title>
+    <meta name="theme-color" content="#18372f" />
+    <title>Juniper Salon — Waitlist concierge</title>
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
-    <main>
-      <p class="eyebrow">Temporal assessment starter</p>
-      <h1>Your environment is connected.</h1>
-      <p class="intro">
-        This neutral demonstration starts a Workflow, waits durably for a
-        Signal, and then completes. Replace it with the experience your
-        customer needs.
-      </p>
-      <section class="card">
-        <h2 id="phase">Ready</h2>
-        <p id="message">Start the demonstration to verify the setup.</p>
-        <button id="start">Start demo Workflow</button>
-        <button id="continue" hidden>Send continue Signal</button>
-        <p class="request-id" id="request-id"></p>
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Juniper Salon home">
+        <span class="brand-mark">J</span>
+        <span><strong>Juniper</strong><small>Salon concierge</small></span>
+      </a>
+      <div class="topbar-meta">
+        <span class="live-dot"></span>
+        Local Temporal prototype
+      </div>
+    </header>
+
+    <main class="shell">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Cancellation recovery</p>
+          <h1>Fill the opening without the phone-tree scramble.</h1>
+          <p class="lede">One durable workflow offers this slot to the right clients, one at a time, and remembers every response, retry, and timeout.</p>
+        </div>
+        <div class="hero-controls">
+          <label class="switch-row">
+            <input id="failure-toggle" type="checkbox" />
+            <span class="switch" aria-hidden="true"></span>
+            <span><strong>Simulate send outage</strong><small>Exhaust retries, then recover manually</small></span>
+          </label>
+          <button class="primary" id="start-workflow">Start 10-second demo</button>
+          <p id="start-note" class="microcopy">Production offer window: 15 minutes</p>
+        </div>
       </section>
-      <p class="footer">
-        Inspect the execution at
-        <a href="http://localhost:8233" target="_blank">localhost:8233</a>.
-      </p>
+
+      <section class="metrics" aria-label="Workflow summary">
+        <article><span>Slot status</span><strong id="phase-metric">Ready</strong></article>
+        <article><span>Eligible clients</span><strong id="eligible-metric">—</strong></article>
+        <article><span>Current offer</span><strong id="current-metric">None</strong></article>
+        <article><span>Response window</span><strong id="countdown-metric">10 sec</strong></article>
+      </section>
+
+      <div id="notice" class="notice" hidden></div>
+
+      <section class="workspace">
+        <div class="main-column">
+          <article class="panel slot-card">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Open appointment</p>
+                <h2 id="slot-title">Loading fixture…</h2>
+                <p id="slot-time" class="muted"></p>
+              </div>
+              <span class="status-pill" id="status-pill">Ready</span>
+            </div>
+            <div class="workflow-rail" aria-label="Workflow stages">
+              <div class="rail-step active" data-stage="matching"><span>1</span><b>Match</b></div>
+              <div class="rail-line"></div>
+              <div class="rail-step" data-stage="sending"><span>2</span><b>Send</b></div>
+              <div class="rail-line"></div>
+              <div class="rail-step" data-stage="offered"><span>3</span><b>Wait</b></div>
+              <div class="rail-line"></div>
+              <div class="rail-step" data-stage="filled"><span>4</span><b>Book</b></div>
+            </div>
+            <div id="error-card" class="error-card" hidden>
+              <div><strong id="error-title">Simulated delivery failure</strong><p id="error-message"></p></div>
+              <div class="button-row">
+                <button class="primary compact" id="error-retry" data-action="retry" data-actor="staff">Retry delivery</button>
+                <button class="secondary compact" id="error-skip" data-action="skip" data-actor="staff">Skip client</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-heading inline">
+              <div><p class="eyebrow">Queue</p><h2>Waitlist candidates</h2></div>
+              <span class="legend"><i></i> Eligible &amp; oldest first</span>
+            </div>
+            <div class="candidate-list" id="candidate-list"></div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-heading inline">
+              <div><p class="eyebrow">Durable audit trail</p><h2>Workflow history</h2></div>
+              <a class="temporal-link" href="http://localhost:8233" target="_blank" rel="noreferrer">Open Temporal UI ↗</a>
+            </div>
+            <ol class="timeline" id="timeline">
+              <li class="timeline-empty">Start the workflow to see durable events appear here.</li>
+            </ol>
+          </article>
+        </div>
+
+        <aside class="side-column">
+          <article class="client-phone">
+            <div class="phone-top"><span>Client preview</span><span>•••</span></div>
+            <div class="client-content">
+              <span class="message-icon">✦</span>
+              <p class="eyebrow">A Juniper opening</p>
+              <h2 id="client-name">Waiting for an offer</h2>
+              <p id="client-copy">Start the workflow to preview the client response experience.</p>
+              <div class="appointment-mini">
+                <span id="client-service">Color refresh</span>
+                <strong id="client-time">Thu · 2:30 PM</strong>
+                <small id="client-stylist">with Maya</small>
+              </div>
+              <div class="client-actions" id="client-actions" hidden>
+                <button class="primary full" data-action="accept" data-actor="client">Accept opening</button>
+                <button class="text-button" data-action="decline" data-actor="client">No thanks</button>
+              </div>
+              <button class="secondary full" id="late-accept" hidden>Simulate a late accept</button>
+              <p class="client-result" id="client-result"></p>
+            </div>
+          </article>
+
+          <article class="proof-card">
+            <p class="eyebrow">What is real here</p>
+            <ul>
+              <li><span>✓</span> Workflow state and timers</li>
+              <li><span>✓</span> Activity retries and recovery</li>
+              <li><span>✓</span> Updates, Query, idempotent IDs</li>
+              <li class="simulated"><span>≈</span> SMS and booking are simulated</li>
+            </ul>
+          </article>
+        </aside>
+      </section>
     </main>
     <script src="/app.js"></script>
   </body>
 </html>
-

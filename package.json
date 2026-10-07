@@ -1,15 +1,17 @@
 {
-  "name": "temporal-assessment-starter",
+  "name": "juniper-salon-temporal",
   "version": "1.0.0",
   "private": true,
-  "description": "Student starter for the Temporal post-assessment.",
+  "description": "Durable cancellation-fill prototype for Juniper Salon.",
   "scripts": {
     "dev": "node scripts/dev.mjs",
     "dev:api": "tsx src/api.ts",
     "dev:worker": "tsx src/worker.ts",
     "start:temporal": "docker compose up -d temporal",
     "stop": "docker compose down",
-    "test": "tsx --test tests/workflow.test.ts",
+    "test": "tsx --test tests/*.test.ts",
+    "test:domain": "tsx --test tests/domain.test.ts",
+    "test:offline": "tsx --test tests/domain.test.ts tests/activities.test.ts",
     "typecheck": "tsc --noEmit"
   },
   "engines": { "node": ">=20" },
